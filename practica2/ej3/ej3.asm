@@ -1,4 +1,4 @@
-PROCESSOR 16f877
+                                                           PROCESSOR 16f877
 INCLUDE <p16f877.inc> 
 I equ H'30'; valor adelante
 J equ H'31'; valor atras
@@ -43,6 +43,7 @@ CONTINUE:
 	;Fin de logica de ordenamiento
 	INCF FSR
 	GOTO LOOP1
+
 END_LOOP1:
 	MOVLW H'21'
 	MOVWF FSR
@@ -51,6 +52,7 @@ END_LOOP1:
 
 END_LOOP0:
 	GOTO $
+
 CHECK_Z:
 	BTFSC STATUS, Z
 	GOTO CONTINUE ;Es cero
