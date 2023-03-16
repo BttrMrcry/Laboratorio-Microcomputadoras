@@ -10,6 +10,8 @@ cte3 equ 60h
 GOTO INICIO
  	ORG 5
 INICIO:
+;Configura el puerto B
+;como salida
 	BSF STATUS,RP0
  	BCF STATUS,RP1
  	MOVLW H'0'
@@ -17,12 +19,16 @@ INICIO:
  	BCF STATUS,RP0
  	CLRF PORTB
 loop2 
+;Carga la constante FF
 	MOVLW H'FF'
 	MOVWF PORTB
  	CALL retardo
+;Limpia los bits de
+;registro
 	CLRF PORTB
  	CALL retardo
  	GOTO loop2
+;Un retardo 
 retardo 
 	MOVLW cte1
  	MOVWF valor1
