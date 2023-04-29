@@ -13,21 +13,30 @@ INICIO:
 	CLRF PORTA
 	BSF STATUS,RP0
  	BCF STATUS,RP1
+	;Coinfigura los puertos B y C
+	;como salidas
  	MOVLW H'00'
  	MOVWF TRISB
 	MOVWF TRISC
+	;Configura el puerto A como
+	;digital
 	MOVLW 06H
 	MOVWF ADCON1
+	;Configura el puerto A como entrada
 	MOVLW 3FH
 	MOVWF TRISA
  	BCF STATUS,RP0
+	;Limpia los puertos B y C
 	MOVLW B'00000000'
 	MOVWF PORTB
 	MOVWF PORTC
 
-	
-	
 loop1:
+
+	; Loop principal. Dependiendo
+	; de la posición del switch
+	; se digirge el programa al 
+	;flujo correcto
 	MOVLW h'00'	
 	SUBWF PORTA, W
 	BTFSC STATUS, Z
@@ -75,7 +84,12 @@ loop1:
 
 goto loop1	
 
-
+;Para cada sentido de giro 
+;de los motores solicitado
+;se activa el motor con el 
+; portc y con el portb se 
+; determina la dirección de 
+;giro 
 
 PARO_PARO:
 	BCF PORTC, 2
@@ -146,22 +160,3 @@ AH_H
 	BCF PORTB, 1
 	GOTO loop1
 	
-	
-retardo 
-	MOVLW cte1
- 	MOVWF valor1
-tres 
-	MOVLW cte2
-	MOVWF valor2
-dos 
-	MOVLW cte3
-	MOVWF valor3
-uno 
-	DECFSZ valor3
- 	GOTO uno
-	DECFSZ valor2
-	GOTO dos
-	DECFSZ valor1
-	GOTO tres
-	RETURN
-	END

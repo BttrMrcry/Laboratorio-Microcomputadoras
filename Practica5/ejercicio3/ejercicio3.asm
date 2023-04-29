@@ -2,13 +2,14 @@
 include <p16f877.inc>
 REGB    equ h'21'
 REGA    equ h'22'
+; Constantes de retardo 
 cteA     equ h'FF'; 
-cteB0    equ .6
-cteB01	 equ .124
-cteB90   equ .17
-cteB901  equ .120
-cteB180	 equ .13
-cteB1801 equ .117  
+cteB0    equ .6  ;6.49
+cteB01	 equ .124 ;123.5
+cteB90   equ .10 ;9.74
+cteB901  equ .120 ;120.28
+cteB180	 equ .13 ;13
+cteB1801 equ .117  ;117.03
 
  	ORG 0
 GOTO INICIO
@@ -17,12 +18,18 @@ INICIO:
 	CLRF PORTA
 	BSF STATUS,RP0
  	BCF STATUS,RP1
- 	MOVLW H'00'
+ 	;Configura los puertos 
+	; B, C y D como salidas
+	MOVLW H'00'
  	MOVWF TRISB
 	MOVWF TRISC
 	MOVWF TRISD
+	; El puerto A se configura 
+	; como entrada digital 
 	MOVLW 06H
 	MOVWF ADCON1
+	; Configura el puerto A como 
+	; entrada
 	MOVLW 3FH
 	MOVWF TRISA
  	BCF STATUS,RP0
@@ -31,6 +38,11 @@ INICIO:
 	MOVWF PORTC
 	MOVWF PORTD
 loop1:
+
+	;Dependiendo de la posicion
+	; del switch se ingresa
+	; a alguno de los flujos
+	; para cada angulo
 	MOVLW h'04'		;
 	SUBWF PORTA, W	; 
 	BTFSC STATUS, Z	;
@@ -52,14 +64,18 @@ goto loop1
 
 
 ang0:
+	;Verifica que se siga en la 
+	; misma opcion para mantener 
+	; el angulo 
 	MOVLW h'04'		;
-	SUBWF PORTA, W	; PORTA = 0 ?
+	SUBWF PORTA, W	; PORTA = 4 ?
 	BTFSS STATUS, Z	;
 	GOTO loop1	; VAMOS A PARO
-	
+
 	MOVF PORTA
 	MOVWF PORTD	
-
+; Genera la onda con periodo de 20ms
+; y tiermpo encendido de 1ms
 	BSF PORTC, 0
 	CALL RETARDO0
 	CLRF PORTC
@@ -69,10 +85,12 @@ ang0:
 
 ang90:                                                      
 	MOVLW h'02'		;
-	SUBWF PORTA, W	; PORTA = 0 ?
+	SUBWF PORTA, W	; PORTA = 2 ?
 	BTFSS STATUS, Z	;
 	GOTO loop1	; VAMOS A PARO
 	
+	; Genera la onda con periodo de 20ms
+	; y tiermpo encendido de 1.5ms
 	BSF PORTC, 0
 	CALL RETARDO90
 	CLRF PORTC
@@ -81,10 +99,13 @@ ang90:
 
 ang180:
 	MOVLW h'01'		;
-	SUBWF PORTA, W	; PORTA = 0 ?
+	SUBWF PORTA, W	; PORTA = 1 ?
 	BTFSS STATUS, Z	;
 	GOTO loop1	; VAMOS A PARO
 	
+
+	; Genera la onda con periodo de 20ms
+	; y tiermpo encendido de 2ms
 	BSF PORTC, 0
 	CALL RETARDO180
 	CLRF PORTC
@@ -92,7 +113,9 @@ ang180:
 	GOTO ang180 
 
 
-	
+;Rutina de retarado con las constantes 
+;conrrespondientes definidas alñ inicio 
+; del programa
 RETARDO0:		; 
 	MOVLW cteB0	;
  	MOVWF REGB	;
