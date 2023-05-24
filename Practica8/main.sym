@@ -1,0 +1,97 @@
+004-005 @WRITE_PROGRAM_MEMORY8.P1
+004-005 @READ_PROGRAM_MEMORY8.P2
+008     lcdlat
+008     lcd
+008     PSP_DATA
+015     CCP_1
+015     CCP_1_LOW
+016     CCP_1_HIGH
+01B     CCP_2_LOW
+01B     CCP_2
+01C     CCP_2_HIGH
+021     MAIN.count
+022     MAIN.last
+023     MAIN.input
+024     @PRINTF_X_91.P1
+024     @PRINTF_D_91.P2
+024     lcd_init.i
+025     @PRINTF_X_91.P1
+025     @PRINTF_D_91.P2
+025     lcd_init.@SCRATCH1
+026     @PRINTF_D_91.@SCRATCH1
+027     @PRINTF_D_91.@SCRATCH2
+028     @PRINTF_D_91.@SCRATCH3
+029     @PRINTF_D_91.@SCRATCH4
+02A     lcd_putc.c
+02A     @DIV88.P1
+02B     @DIV88.P1
+02B     lcd_gotoxy.x
+02B     @delay_ms1.P1
+02C     lcd_gotoxy.y
+02C     @DIV88.@SCRATCH1
+02D     lcd_gotoxy.address
+02E     lcd_gotoxy.@SCRATCH1
+02F     lcd_send_byte.address
+030     lcd_send_byte.n
+031     lcd_read_byte.low
+031     lcd_send_byte.@SCRATCH1
+032     lcd_send_nibble.n
+032     lcd_read_byte.high
+033     lcd_read_byte.@SCRATCH1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+088     lcdtris
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+00000C  @delay_ms1
+000004  LCD_INIT_STRING
+00003D  lcd_read_byte
+000031  lcd_read_nibble
+000020  lcd_send_nibble
+000037  lcd_send_byte
+000079  lcd_init
+0000AC  lcd_gotoxy
+0000BE  lcd_putc
+00017B  MAIN
+0000EA  @DIV88
+0000FF  @PRINTF_D_91
+000158  @PRINTF_X_91
+00017B  @cinit1
+000184  @cinit2
+
+Project Directory:
+    E:\micros\Practica8\
+
+Project Files:
+    main.c                                                  [25-mar-05 12:32  CRC=8796CD85]
+    C:\Program Files (x86)\PICC\devices\16F877.h            [30-nov-12 17:59  CRC=5ABE99AD]
+    C:\Program Files (x86)\PICC\drivers\lcd.c               [23-ago-12 08:01  CRC=D28E8746]
+
+Source signature=877275BE
+
+Units:
+    main (main)
+
+Compiler Settings:
+    Processor:      PIC16F877
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      main.err
+    Ext Symbols: main.esym
+    INHX8:       main.hex
+    Symbols:     main.sym
+    List:        main.lst
+    Debug/COFF:  main.cof
+    Project:     main.PJT
+    Call Tree:   main.tre
+    Statistics:  main.STA

@@ -11,21 +11,31 @@ INICIO:
 	CLRF PORTA
 	BSF STATUS, RP0
 	BCF STATUS, RP1
+	;COnfiguración del convertidor
 	CLRF ADCON1
 	CLRF PORTD
 	BCF STATUS, RP0
 LOOP_PRINCIPAL
+	;Para cada potenciometro se realiza 
+	;una muestra. Para hacerlo, se debe
+	;cambiar el canar del convertidor 
+	;para cada uno de los casos.
 	MOVLW B'11101001'
 	MOVWF ADCON0	
+	;Se inicia la conversión
 	BSF ADCON0, 2
 	CALL RETARDO
+	;Se espera al resultado
 LOOP_V1:
 	BTFSC ADCON0, 2
 	GOTO LOOP_V1
+	;Se guarda el resultado en el registro 
+	;asignado a cada uno de los potenciómetros
 	MOVF ADRESH, W
 	MOVWF v1
 
-
+	;Se seleciona el canal correspondiente para 
+	; el potenciómetro 2
 	MOVLW B'11110001'
 	MOVWF ADCON0	
 	BSF ADCON0, 2
@@ -37,7 +47,8 @@ LOOP_V2:
 	MOVWF v2
 
 
-
+		;Se seleciona el canal correspondiente para 
+	; el potenciómetro 3
 	MOVLW B'11111001'
 	MOVWF ADCON0	
 	BSF ADCON0, 2
@@ -48,6 +59,15 @@ LOOP_V3:
 	MOVF ADRESH, W
 	MOVWF v3
 
+; En estas comparaciones revisa que 
+; voltaje es menor a otro para mostrar
+; el número correcto de leds. Para esto
+; se realizan a lo más cuatro comparaciones.
+; Para el primer caso se realizan 2.
+;para el segundo 2 más y para el último nimguna,
+; ya que si el flujo del programa llegó a ese punto 
+;significa que no fue el primero ni el segundo caso, 
+; por lo que obligatoriamente debe ser el tercero.
 PRIMER_COMP
 	; Primera comp
 	MOVFW v2
@@ -65,6 +85,7 @@ DEFAULT
 	MOVLW B'00000111'
 	MOVWF PORTD	
 	GOTO LOOP_PRINCIPAL
+
 CHECK_V3_1RA
 	MOVFW v3
 	SUBWF v1, 0
@@ -73,6 +94,7 @@ CHECK_V3_1RA
 	MOVLW B'00000001'
 	MOVWF PORTD
 	GOTO LOOP_PRINCIPAL
+	
 CHECK_V3_2DA
 	MOVFW v3
 	SUBWF v2, 0
