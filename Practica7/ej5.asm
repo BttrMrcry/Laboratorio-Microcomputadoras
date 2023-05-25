@@ -12,20 +12,30 @@ GOTO INICIO
 
 ORG 5
 INICIO
-BSF STATUS,RP0 ;Cambiamos al banco 1
+;Cambiamos al banco 1
+BSF STATUS,RP0 
 BCF STATUS,RP1
 MOVLW H'0'
 MOVWF TRISB
-BSF TXSTA,BRGH	;Activamos el BRGH
+;Activamos el BRGH
+BSF TXSTA,BRGH	
 MOVLW D'129'
-MOVWF SPBRG		;Configuramos el baud rate a 9600
-BCF TXSTA,SYNC	;Configuramos la asincrona
-BSF TXSTA,TXEN  ;Activamos el transmisor
-BCF STATUS,RP0	;Volvemos al banco 0
-BSF RCSTA,SPEN	;Habilitamos la recepcion
-BSF RCSTA,CREN	;Habilitamos la recepcion continua
+;Configuramos el baud rate a 9600
+MOVWF SPBRG	
+;Configuramos la asincrona	
+BCF TXSTA,SYNC	
+;Activamos el transmisor
+BSF TXSTA,TXEN 
+;Volvemos al banco 0 
+BCF STATUS,RP0	
+;Habilitamos la recepcion
+BSF RCSTA,SPEN
+;Habilitamos la recepcion continua	
+BSF RCSTA,CREN	
 
 loop1:
+;LLamamos a la subrutina que recibe
+; los datos
 call RECIBE
 
 MOVLW H'44'
@@ -52,9 +62,11 @@ GOTO LEFT_SHIFT
 
 
 RECIBE
-BTFSS PIR1,RCIF	;Verificamos la bandera recepcion
+;Verificamos la bandera recepcion
+BTFSS PIR1,RCIF	
 GOTO RECIBE
-MOVF RCREG,W	;Copiamos lo recibido a W
+;Copiamos lo recibido a W
+MOVF RCREG,W	
 MOVWF Opcion
 return
 
