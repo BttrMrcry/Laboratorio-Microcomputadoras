@@ -12,33 +12,48 @@ GOTO INICIO
 
 ORG 5
 INICIO
-BSF STATUS,RP0 ;Cambiamos al banco 1
+;Cambiamos al banco 1
+BSF STATUS,RP0 
 BCF STATUS,RP1
 MOVLW H'0'
 MOVWF TRISB
-BSF TXSTA,BRGH	;Activamos el BRGH
+;Activamos el BRGH
+BSF TXSTA,BRGH	
 MOVLW D'129'
-MOVWF SPBRG		;Configuramos el baud rate a 9600
-BCF TXSTA,SYNC	;Configuramos la asincrona
-BSF TXSTA,TXEN  ;Activamos el transmisor
-BCF STATUS,RP0	;Volvemos al banco 0
-BSF RCSTA,SPEN	;Habilitamos la recepcion
-BSF RCSTA,CREN	;Habilitamos la recepcion continua
+;Configuramos el baud rate a 9600
+MOVWF SPBRG	
+;Configuramos la asincrona	
+BCF TXSTA,SYNC	
+;Activamos el transmisor
+BSF TXSTA,TXEN  
+;Volvemos al banco 0
+BCF STATUS,RP0
+;Habilitamos la recepcion	
+BSF RCSTA,SPEN	
+;Habilitamos la recepcion continua
+BSF RCSTA,CREN	
 RECIBE:
-BTFSS PIR1,RCIF	;Verificamos la bandera recepcion
+;Verificamos la bandera recepcion
+BTFSS PIR1,RCIF	
 GOTO RECIBE
-MOVF RCREG,W	;Copiamos lo recibido a W
+;Copiamos lo recibido a W
+MOVF RCREG,W	
 MOVWF Opcion
+;Comparamos con 0
 MOVLW .0
 SUBWF Opcion, W
 BTFSC STATUS,Z
 GOTO CERO
+;Comparamos con 1
 MOVLW .1
 SUBWF Opcion, W
 BTFSC STATUS,Z
 GOTO UNO
 GOTO RECIBE
 
+;Dependiendo de si se 
+; recibio 0 o 1 se carga ese valor
+; en el registro W
 UNO:
 MOVLW H'01'
 GOTO CONTINUA
@@ -47,13 +62,17 @@ MOVLW H'00'
 GOTO CONTINUA
 
 CONTINUA:
-MOVWF TXREG	;Lo transmitimos
+;Lo transmitimos
+MOVWF TXREG	
 CLRF PORTB
 MOVWF PORTB
-BSF STATUS,RP0	;Vamos al banco 1
+;Vamos al banco 1
+BSF STATUS,RP0	
 TRANSMITE:
-BTFSS TXSTA,TRMT	;Comprobamos si ya termino de transmitir
-GOTO TRANSMITE	
-BCF STATUS,RP0	;Volvemos al banco 0
+;Comprobamos si ya termino de transmitir
+BTFSS TXSTA,TRMT	
+GOTO TRANSMITE
+;Volvemos al banco 0	
+BCF STATUS,RP0	
 GOTO RECIBE
 END
