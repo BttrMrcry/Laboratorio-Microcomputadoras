@@ -125,19 +125,19 @@ void left_shift() {
 */
 
 #include <16F877.h>
-#fuses HS,NOWDT,NOPROTECT,NOLVP
-#use delay(clock=20000000)
-#include <lcd.c>
+#fuses HS,NOWDT,NOPROTECT,NOLVP  
+#use delay(clock=20000000) 
+#include <lcd.c>  
 
 
 void main() {
-   lcd_init();
-   int8 count = 0;
-   int8 last = 0;
+   lcd_init(); // Inicializamos el LCD
+   int8 count = 0; // Contador
+   int8 last = 0; // Ultimo valor de entrada
    while( TRUE ) {
-      int8 input = input_a();
-      input &= 32;
-      if(last == 0 && input){
+      int8 input = input_a(); // Leemos el valor de entrada
+      input &= 32;      // Nos quedamos con el bit 5
+      if(last == 0 && input){ // Si el ultimo valor fue 0 y el actual es 1
          count++;
          last = 1;
       }
@@ -145,9 +145,9 @@ void main() {
          last = 0;
       }
    
-      lcd_gotoxy(5,1);
-      printf(lcd_putc," %d \n ", count);
-      lcd_gotoxy(5,2);
-      printf(lcd_putc," %x \n ", count);
+      lcd_gotoxy(5,1);  // Nos posicionamos en la fila 1, columna 5
+      printf(lcd_putc," %d \n ", count);  // Imprimimos el valor del contador
+      lcd_gotoxy(5,2);  // Nos posicionamos en la fila 2, columna 5
+      printf(lcd_putc," %x \n ", count);  // Imprimimos el valor del contador
     }
 }
