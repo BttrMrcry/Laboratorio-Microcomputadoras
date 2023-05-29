@@ -1,0 +1,26 @@
+[PROJECT]
+Target=E:\micros\Practica9\main.hex
+Development_Mode=
+Processor_Text=PIC16F877
+ToolSuite=CCS
+Processor=0x877F
+[E:\micros\Practica9\main]
+Type=4
+Path=
+FileList=
+BuildTool=
+OptionString=
+AdditionalOptionString=
+[mru-list]
+1=E:\micros\Practica9\main.c
+[Windows]
+0=0000 %S 0 0 796 451 3 0
+[Units]
+Link=0
+Count=1
+1=E:\micros\Practica9\main
+[Opened Files]
+1=main.c
+2=C:\Program Files (x86)\PICC\drivers\lcd.c
+3=C:\Program Files (x86)\PICC\drivers\i2c_LCD.c
+4=

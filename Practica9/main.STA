@@ -1,0 +1,68 @@
+
+ROM used:   869 (11%)
+            869 (11%) including unused fragments
+
+            1 Average locations per line
+            8 Average locations per statement
+
+RAM used:   13 (4%) at main() level
+            34 (9%) worst case
+
+Stack used: 6/8 worst case (6 in main + 0 for interrupts)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   96    30  28  main.c
+  302     0   0  C:\Program Files (x86)\PICC\devices\16F877.h
+  211    77  72  C:\Program Files (x86)\PICC\drivers\i2c_LCD.c
+----- -----
+  609   107 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     20   2   1             @delay_ms1
+0     16   2   1    59  4.2  @I2C_WRITEU_1
+0     16   2   1   179  3.3  @I2C_READU_1
+0     84  10   3   574  5.9  i2c_send_nibble
+0     30   3   3   149  2.8  lcd_send_byte
+0     10   1   0    61  1.9  lcd_clear
+0      8   1   0   267  6.8  @const89
+0     76   9   5   902  5.8  lcd_init
+0     55   6   7   681  8.0  lcd_gotoxy
+0     37   4   1   310  5.9  LCD_PUTC
+ Inline        3   153  5.3  power
+0     37   4   2   113  2.1  @MUL88
+0     19   2   1    67  1.2  escribir_i2c
+0     53   6   4   241  6.8  dec2Hex
+0     21   2   3             @DIV88
+0     25   3   1   113  2.1  leer_i2c
+0     95  11   1   287  2.7  MAIN
+0      6   1   0             @const125
+0     77   9   4             @PSTRINGC7_100
+0      5   1   0             @const128
+0     86  10   5             @PSTRINGCN7_100
+0     89  10   6             @PRINTF_D_100
+ Inline        0             @cinit1
+
+Program metrics:
+    Functions               15
+    Statements              107
+    Comments                264
+    Volume (V)              6986
+    Difficulty (D)          62.7
+    Effort to implement (E) 438243
+    Time to implement (T)   6 hours, 46 minutes
+    Est Delivered Bugs (B)  2
+    Cyclomatic Complexity   18
+    Maintainability (MI)    118
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00003     4  0  
+00004-007FF   865  1179  
+00800-00FFF     0  2048  
+01000-017FF     0  2048  
+01800-01FFF     0  2048  
+
+
+
