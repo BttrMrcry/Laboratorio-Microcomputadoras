@@ -41,7 +41,10 @@
 */
 
 // include the library code:
-#include <LiquidCrystal.h>
+
+#include <Wire.h>    // Incluimos la librería Wire.h que establece la comunicación con el protocolo I2C.            
+#include <LiquidCrystal_I2C.h>    // Incluimos la librería para usar la pantalla LCD con el módulo I2C.
+// nnn#include <SoftwareSerial.h>
 #include <Ds1302.h>
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
@@ -53,30 +56,32 @@ bool alarmTriggered = false;
 int alarmHour = 1000;
 int alarmMinute = 1000;
 
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal_I2C lcd(0x27, 12, 2); 
 Ds1302 rtc(RST, clk, DAT);
-
+//SoftwareSerial bt(2, 3) ; //RX |TX
 void setOrReset();
 void alarmTrigger();
 
 const static char* WeekDays[] =
 {
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+    "Lunes",
+    "Martes",
+    "Miercoles",
+    "Jueves",
+    "Viernes",
+    "Sabado",
+    "Domingo"
 };
 
 
 void setup() {
-
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
   pinMode(led, OUTPUT);
   pinMode(buzzer, OUTPUT);
   // set up the LCD's number of columns and rows:
-  lcd.begin(16, 2);
+  lcd.begin(12,2);
   // Print a message to the LCD.
   lcd.print("hello, world!");
   Serial.begin(9600);
@@ -87,30 +92,31 @@ void setup() {
         Serial.println("RTC is halted. Setting time...");
         Ds1302::DateTime dt = {
             .year = 23,
-            .month = Ds1302::MONTH_MAY,
-            .day = 31,
-            .hour = 19,
-            .minute = 49,
+            .month = Ds1302::MONTH_JUN,
+            .day = 1,
+            .hour = 11,
+            .minute = 36,
             .second = 0,
             .dow = Ds1302::DOW_TUE
         };
         rtc.setDateTime(&dt);
+
     }
-    
+
+
 
 
 }
-
+int last_minute = 0;
 void loop() {
-
+    lcd.setCursor(0,0);    // Posiciona la primera letra en el segmento 0 de línea 1 (Se empieza a contar desde 0).            
     // get the current time
     Ds1302::DateTime now;
     rtc.getDateTime(&now);
-    setOrReset();
-    alarmTrigger(now);
-    static uint8_t last_minute = 0;
+
     if (last_minute != now.minute)
     {
+        lcd.clear();
         alarmTriggered = false;
         Serial.println("Puedes configurar la alarma presionando la letra 'C' seguido de enter");
         last_minute = now.minute;
@@ -136,7 +142,28 @@ void loop() {
         Serial.print(now.second);  // 00-59
         Serial.println();
     }
+    String minuteToPrint;
+    if(now.minute < 10){
+      minuteToPrint = String("0")+String(now.minute);
+    }else{
+      minuteToPrint = String(now.minute);
+    }
+    
 
+    String hourToPrint;
+    if(now.hour < 10){
+      hourToPrint = String("0")+String(now.hour);
+    }else{
+      hourToPrint = String(now.hour);
+    }
+    
+    String toPrint = hourToPrint + String(':')+ minuteToPrint;
+    lcd.setCursor(0, 0);
+    lcd.print(toPrint);
+    lcd.setCursor(0, 1);
+    lcd.print(WeekDays[now.dow - 1]);
+    setOrReset();
+    alarmTrigger(now);
     delay(100);
 }
 
@@ -146,8 +173,7 @@ void alarmTrigger(const Ds1302::DateTime &now) {
       // Prender led
       alarmTriggered = true;
       Serial.println("Alarma activada");
-      tone(buzzer, 50);
-      delay(50);
+      tone(buzzer, 70);
       for(int i = 0; i < 256; i++){
         analogWrite(led, i);
         delay(10);
@@ -189,5 +215,6 @@ void setOrReset(){
     if(option.equals("X") || option.equals("x")){
       analogWrite(led, 0);
       noTone(buzzer);
+      
     }
 }
